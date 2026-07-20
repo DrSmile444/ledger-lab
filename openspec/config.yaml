@@ -1,0 +1,24 @@
+schema: spec-driven
+
+context: |
+  Domain: minimal in-memory banking ledger core (accounts + transactions only).
+  No HTTP layer, no database — pure TypeScript domain logic, validated with Zod.
+  Tech stack: TypeScript (strict), Zod, Vitest.
+  Conventions: no default exports; `*.schema.ts` for Zod schemas + inferred types;
+  `*.service.ts` for business logic; tests mirror `src/` under `tests/` with a
+  `.spec.ts` suffix, root describe per file, nested describe per method, then
+  positive/negative sub-describes.
+  Commits: Conventional Commits.
+  `main` is a fixed baseline (Account + Transaction domain model) — new features
+  are proposed and built on top, never merged back into `main`.
+
+rules:
+  proposal:
+    - Keep proposals under 500 words.
+    - Always include an explicit "Out of scope" section — this is a demo repo
+      whose whole point is showing that a well-scoped ask produces better output.
+  tasks:
+    - Break tasks into chunks of max 2 hours.
+  design:
+    - State the exact business rule (trigger condition, tiers, suppression
+      window) in plain language before any implementation detail.
