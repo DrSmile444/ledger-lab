@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "target": "esnext",
+    "strict": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@decorators/*": ["./src/decorators/*"],
+      "@fixtures/*": ["./src/fixtures/*"],
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@interfaces": ["./src/interfaces"],
+      "@models/*": ["./src/models/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@services/*": ["./src/services/*"],
+      "@test-data/*": ["./src/test-data/*"],
+      "@tests/*": ["./src/tests/*"],
+      "@utils/*": ["./src/utils/*"]
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": [".eslint", "src", "tests", "scripts", "vitest.config.ts"]
+}
