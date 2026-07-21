@@ -43,7 +43,7 @@ function isSuppressed(lastAlert: AlertHistory, now: string): boolean {
 
   const hoursSinceLastAlert = (new Date(now).getTime() - new Date(lastAlert.lastAlertAt).getTime()) / (1000 * 60 * 60);
 
-  return hoursSinceLastAlert >= 0 && hoursSinceLastAlert < SUPPRESSION_WINDOW_HOURS;
+  return hoursSinceLastAlert > 0 && hoursSinceLastAlert < SUPPRESSION_WINDOW_HOURS;
 }
 
 /**

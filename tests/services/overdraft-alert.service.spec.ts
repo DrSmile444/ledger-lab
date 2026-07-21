@@ -97,6 +97,13 @@ describe('overdraft-alert.service.ts', () => {
 
         expect(evaluateBalanceAlert(account, transactions, THRESHOLD, NOW, lastAlert)).toStrictEqual({ tier: 'low-balance' });
       });
+
+      it('fires when the last alert is exactly at the current evaluation time, not just strictly after it', () => {
+        const transactions = [buildPendingDebit(-9000)];
+        const lastAlert: AlertHistory = { lastAlertAt: NOW, recoveredSinceLastAlert: false, tier: 'low-balance' };
+
+        expect(evaluateBalanceAlert(account, transactions, THRESHOLD, NOW, lastAlert)).toStrictEqual({ tier: 'low-balance' });
+      });
     });
 
     describe('negative', () => {
