@@ -3,22 +3,70 @@ schema: spec-driven
 context: |
   Domain: minimal in-memory banking ledger core (accounts + transactions only).
   No HTTP layer, no database — pure TypeScript domain logic, validated with Zod.
-  Tech stack: TypeScript (strict), Zod, Vitest.
-  Conventions: no default exports; `*.schema.ts` for Zod schemas + inferred types;
-  `*.service.ts` for business logic; tests mirror `src/` under `tests/` with a
-  `.spec.ts` suffix, root describe per file, nested describe per method, then
-  positive/negative sub-describes.
-  Commits: Conventional Commits.
-  `main` is a fixed baseline (Account + Transaction domain model) — new features
-  are proposed and built on top, never merged back into `main`.
+
+  ## Tech Stack
+  Language: TypeScript (strict mode), no default exports in libs.
+  Validation: Zod v4 — `*.schema.ts` files export a schema plus its inferred
+  type via `z.infer`.
+  Testing: Vitest — `*.spec.ts` under `tests/`, mirroring `src/`'s structure.
+  Linting: ESLint (strict — boundaries, sonarjs, security, no-secrets,
+  perfectionist, naming, no-barrel-files, import-alias, simple-import-sort,
+  unicorn) + Prettier.
+  Path aliases: `@models/*`, `@services/*`, etc. (see `tsconfig.json` `paths`) —
+  imports MUST use the alias form, never a relative `../../src/...` path
+  across a models/services/tests boundary.
+
+  ## Conventions
+  Repo structure: `src/models/<name>.schema.ts` (Zod schema + inferred type),
+  `src/services/<name>.service.ts` (business logic, pure functions preferred),
+  `tests/<mirrored-path>/<name>.spec.ts` (root `describe` per file, nested
+  `describe` per method, then `positive`/`negative` sub-describes).
+  Every exported function has a JSDoc comment with `@param`/`@returns`.
+  Object literal keys are alphabetized (eslint-plugin-perfectionist).
+  Commits: Conventional Commits, one logical change per commit.
+
+  ## Quality gates (automatic — enforced by tooling, not memory)
+  - `npm run typecheck` (`tsc --noEmit`, strict) — zero errors.
+  - `npm run lint` — zero errors. The config is intentionally strict; don't
+    disable a rule inline to make code pass without a stated reason.
+  - `npm run test:coverage` — `vitest.config.ts` enforces an 80% floor on
+    lines, branches, functions, and statements. Below that floor, the run
+    fails outright — this is not a suggestion.
+
+  `main` is a fixed baseline (Account + Transaction domain model) — new
+  features are proposed and built on top, never merged back into `main`.
 
 rules:
   proposal:
     - Keep proposals under 500 words.
     - Always include an explicit "Out of scope" section — this is a demo repo
       whose whole point is showing that a well-scoped ask produces better output.
-  tasks:
-    - Break tasks into chunks of max 2 hours.
+    - Identify every new or modified file under `src/` explicitly by path.
+
   design:
     - State the exact business rule (trigger condition, tiers, suppression
-      window) in plain language before any implementation detail.
+      window, or equivalent) in plain language before any implementation detail.
+    - Include a "Risks / Trade-offs" entry for every non-obvious scope decision,
+      each with an explicit mitigation — an unmitigated risk is not a complete design.
+
+  specs:
+    - Use WHEN/THEN scenarios; every requirement gets at least two scenarios —
+      one happy path, one edge case or failure mode. A requirement with only a
+      happy-path scenario is incomplete.
+    - Use SHALL/MUST (RFC 2119) for normative requirement text — never
+      "should" or "may" for something that is actually mandatory.
+
+  tasks:
+    - Break tasks into chunks of max 2 hours.
+    - Every implementation task MUST have a paired test task — writing the
+      code and writing its tests are never the same task.
+    - The final task group MUST include an explicit acceptance criterion:
+      `npm run typecheck && npm run lint && npm run test:coverage` all exit
+      0. This is the actual definition of done, not an assumed afterthought.
+    - Coverage MUST NOT regress: if a run drops total coverage below the 80%
+      floor, add tests — never delete or skip an existing test to make the
+      suite pass.
+    - Every new exported function requires a JSDoc comment with `@param` for
+      every parameter and a `@returns`.
+    - New source files use the project's path aliases for imports, never a
+      relative path across a models/services/tests boundary.
