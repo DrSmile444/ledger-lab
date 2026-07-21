@@ -60,12 +60,8 @@ rules:
     - Break tasks into chunks of max 2 hours.
     - Every implementation task MUST have a paired test task — writing the
       code and writing its tests are never the same task.
-    - The final task group MUST include an explicit acceptance criterion:
-      `npm run typecheck && npm run lint && npm run test:coverage` all exit
-      0. This is the actual definition of done, not an assumed afterthought.
-    - Coverage MUST NOT regress: if a run drops total coverage below the 80%
-      floor, add tests — never delete or skip an existing test to make the
-      suite pass.
+    - "The final task group MUST include an explicit acceptance criterion: `npm run typecheck && npm run lint && npm run test:coverage` all exit 0. This is the actual definition of done, not an assumed afterthought."
+    - "Coverage MUST NOT regress: if a run drops total coverage below the 80% floor, add tests — never delete or skip an existing test to make the suite pass."
     - Every new exported function requires a JSDoc comment with `@param` for
       every parameter and a `@returns`.
     - New source files use the project's path aliases for imports, never a
