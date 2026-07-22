@@ -44,8 +44,9 @@ rules:
     - Identify every new or modified file under `src/` explicitly by path.
 
   design:
-    - State the exact business rule (trigger condition, tiers, suppression
-      window, or equivalent) in plain language before any implementation detail.
+    - State the core business rule in plain language — every condition,
+      branch, and edge case the logic must handle — before any
+      implementation detail.
     - Include a "Risks / Trade-offs" entry for every non-obvious scope decision,
       each with an explicit mitigation — an unmitigated risk is not a complete design.
 
